@@ -11,7 +11,7 @@ public class PokemonImplDAO implements PokemonDAO {
 
     @Override
     public boolean registrar(Pokemon pokemon) {
-        String sql = "INSERT INTO pokemon (numero_pokedex, nombre, primer_tipo, segundo_tipo, generacion, tiene_evolucion, descripcion, altura, peso, id_region) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pokemon (numero_pokedex, nombre, primer_tipo, segundo_tipo, generacion, tiene_evolucion, descripcion, altura, peso, id_region, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = ConexionBBDD.getConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -32,6 +32,7 @@ public class PokemonImplDAO implements PokemonDAO {
             statement.setDouble(8, pokemon.getAltura());
             statement.setDouble(9, pokemon.getPeso());
             statement.setInt(10, pokemon.getIdRegion());
+            statement.setString(11, pokemon.getImagen());
 
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
@@ -64,6 +65,7 @@ public class PokemonImplDAO implements PokemonDAO {
                 pokemon.setAltura(resultSet.getDouble("altura"));
                 pokemon.setPeso(resultSet.getDouble("peso"));
                 pokemon.setIdRegion(resultSet.getInt("id_region"));
+                pokemon.setImagen(resultSet.getString("imagen"));
 
                 lista.add(pokemon);
             }
@@ -76,7 +78,7 @@ public class PokemonImplDAO implements PokemonDAO {
     @Override
     public Pokemon obtenerPorId(int id) {
 
-        Pokemon pokemonSelecionado = null;
+        Pokemon pokemonSeleccionado = null;
         String sql = "SELECT * FROM pokemon WHERE id = ?";
 
         try (Connection conexion = ConexionBBDD.getConexion();
@@ -86,29 +88,31 @@ public class PokemonImplDAO implements PokemonDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    pokemonSelecionado = new Pokemon();
-                    pokemonSelecionado.setId(resultSet.getInt("id"));
-                    pokemonSelecionado.setNumeroPokedex(resultSet.getInt("numero_pokedex"));
-                    pokemonSelecionado.setNombre(resultSet.getString("nombre"));
-                    pokemonSelecionado.setPrimerTipo(resultSet.getString("primer_tipo"));
-                    pokemonSelecionado.setSegundoTipo(resultSet.getString("segundo_tipo"));
-                    pokemonSelecionado.setGeneracion(resultSet.getString("generacion"));
-                    pokemonSelecionado.setTieneEvolucion(resultSet.getBoolean("tiene_evolucion"));
-                    pokemonSelecionado.setDescripcion(resultSet.getString("descripcion"));
-                    pokemonSelecionado.setAltura(resultSet.getDouble("altura"));
-                    pokemonSelecionado.setPeso(resultSet.getDouble("peso"));
-                    pokemonSelecionado.setIdRegion(resultSet.getInt("id_region"));
+                    pokemonSeleccionado = new Pokemon();
+                    pokemonSeleccionado.setId(resultSet.getInt("id"));
+                    pokemonSeleccionado.setNumeroPokedex(resultSet.getInt("numero_pokedex"));
+                    pokemonSeleccionado.setNombre(resultSet.getString("nombre"));
+                    pokemonSeleccionado.setPrimerTipo(resultSet.getString("primer_tipo"));
+                    pokemonSeleccionado.setSegundoTipo(resultSet.getString("segundo_tipo"));
+                    pokemonSeleccionado.setGeneracion(resultSet.getString("generacion"));
+                    pokemonSeleccionado.setTieneEvolucion(resultSet.getBoolean("tiene_evolucion"));
+                    pokemonSeleccionado.setDescripcion(resultSet.getString("descripcion"));
+                    pokemonSeleccionado.setAltura(resultSet.getDouble("altura"));
+                    pokemonSeleccionado.setPeso(resultSet.getDouble("peso"));
+                    pokemonSeleccionado.setIdRegion(resultSet.getInt("id_region"));
+                    pokemonSeleccionado.setImagen(resultSet.getString("imagen"));
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error al obtener el Pokémon por ID: " + e.getMessage());
         }
-        return pokemonSelecionado;
+        return pokemonSeleccionado;
     }
 
     @Override
     public boolean modificar(Pokemon pokemon) {
-        String sql = "UPDATE pokemon SET numero_pokedex=?, nombre=?, primer_tipo=?, segundo_tipo=?, generacion=?, tiene_evolucion=?, descripcion=?, altura=?, peso=?, id_region=? WHERE id=?";
+
+        String sql = "UPDATE pokemon SET numero_pokedex=?, nombre=?, primer_tipo=?, segundo_tipo=?, generacion=?, tiene_evolucion=?, descripcion=?, altura=?, peso=?, id_region=?, imagen=? WHERE id=?";
 
         try (Connection conexion = ConexionBBDD.getConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -128,7 +132,8 @@ public class PokemonImplDAO implements PokemonDAO {
             statement.setDouble(8, pokemon.getAltura());
             statement.setDouble(9, pokemon.getPeso());
             statement.setInt(10, pokemon.getIdRegion());
-            statement.setInt(11, pokemon.getId());
+            statement.setString(11, pokemon.getImagen());
+            statement.setInt(12, pokemon.getId());
 
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
@@ -141,20 +146,7 @@ public class PokemonImplDAO implements PokemonDAO {
 
     @Override
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM pokemon WHERE id = ?";
-
-        try (Connection conexion = ConexionBBDD.getConexion();
-             PreparedStatement statement = conexion.prepareStatement(sql)) {
-
-            statement.setInt(1, id);
-            int filasAfectadas = statement.executeUpdate();
-
-            return filasAfectadas > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar el Pokémon: " + e.getMessage());
-            return false;
-        }
+        return false;
     }
 
     @Override
@@ -188,6 +180,7 @@ public class PokemonImplDAO implements PokemonDAO {
                     pokemon.setAltura(resultSet.getDouble("altura"));
                     pokemon.setPeso(resultSet.getDouble("peso"));
                     pokemon.setIdRegion(resultSet.getInt("id_region"));
+                    pokemon.setImagen(resultSet.getString("imagen"));
                     lista.add(pokemon);
                 }
             }

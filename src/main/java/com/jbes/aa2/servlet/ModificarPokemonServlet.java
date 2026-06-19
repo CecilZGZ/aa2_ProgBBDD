@@ -10,8 +10,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 
 @WebServlet("/modificar-pokemon")
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 10)
 public class ModificarPokemonServlet extends HttpServlet {
 
     private PokemonDAO pokemonDAO;
@@ -33,36 +38,46 @@ public class ModificarPokemonServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        int numero = Integer.parseInt(request.getParameter("numero"));
-        String nombre = request.getParameter("nombre");
-        String tipo1 = request.getParameter("tipo1");
-        String tipo2 = request.getParameter("tipo2");
-        String generacion = request.getParameter("generacion");
-        boolean tieneEvolucion = Boolean.parseBoolean(request.getParameter("tieneEvolucion"));
-        int idRegion = Integer.parseInt(request.getParameter("idRegion"));
+            Pokemon pokemon = new Pokemon();
+            pokemon.setId(id);
+            pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numeroPokedex")));
+            pokemon.setNombre(request.getParameter("nombre"));
+            pokemon.setPrimerTipo(request.getParameter("primerTipo"));
+            pokemon.setSegundoTipo(request.getParameter("segundoTipo"));
+            pokemon.setGeneracion(request.getParameter("generacion"));
+            pokemon.setTieneEvolucion(request.getParameter("tieneEvolucion") != null);
+            pokemon.setDescripcion(request.getParameter("descripcion"));
+            pokemon.setAltura(Double.parseDouble(request.getParameter("altura")));
+            pokemon.setPeso(Double.parseDouble(request.getParameter("peso")));
+            pokemon.setIdRegion(Integer.parseInt(request.getParameter("idRegion")));
 
-        double altura = Double.parseDouble(request.getParameter("altura"));
-        double peso = Double.parseDouble(request.getParameter("peso"));
-        String descripcion = request.getParameter("descripcion");
+            Part filePart = request.getPart("imagen");
+            String imagenActual = request.getParameter("imagenActual");
+            String fileName = (imagenActual != null && !imagenActual.isEmpty()) ? imagenActual : "default.gif";
 
-        Pokemon pokemonActualizado = new Pokemon();
-        pokemonActualizado.setId(id);
-        pokemonActualizado.setNumeroPokedex(numero);
-        pokemonActualizado.setNombre(nombre);
-        pokemonActualizado.setPrimerTipo(tipo1);
-        pokemonActualizado.setSegundoTipo(tipo2);
-        pokemonActualizado.setGeneracion(generacion);
-        pokemonActualizado.setTieneEvolucion(tieneEvolucion);
-        pokemonActualizado.setIdRegion(idRegion);
-        pokemonActualizado.setAltura(altura);
-        pokemonActualizado.setPeso(peso);
-        pokemonActualizado.setDescripcion(descripcion);
+            if (filePart != null && filePart.getSize() > 0) {
+                String submittedFileName = filePart.getSubmittedFileName();
+                if (submittedFileName != null && !submittedFileName.isEmpty()) {
+                    fileName = Paths.get(submittedFileName).getFileName().toString();
+                    String uploadPath = getServletContext().getRealPath("/") + "imagenes";
+                    File uploadDir = new File(uploadPath);
+                    if (!uploadDir.exists()) {
+                        uploadDir.mkdirs();
+                    }
+                    filePart.write(uploadPath + File.separator + fileName);
+                }
+            }
+            pokemon.setImagen(fileName);
 
-        pokemonDAO.modificar(pokemonActualizado);
+            pokemonDAO.modificar(pokemon);
+            response.sendRedirect("listado-pokemon");
 
-        response.sendRedirect("listado-pokemon");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(500, "Error al modificar los datos del Pokémon");
+        }
     }
 }

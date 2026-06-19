@@ -26,8 +26,19 @@
                     <h3 class="mb-0">Editar datos de <%= pokemon.getNombre() %></h3>
                 </div>
                 <div class="card-body">
-                    <form action="modificar-pokemon" method="POST">
+                    <form action="modificar-pokemon" method="POST" enctype="multipart/form-data" class="row g-3">
                         <input type="hidden" name="id" value="<%= pokemon.getId() %>">
+                        <input type="hidden" name="imagenActual" value="<%= pokemon.getImagen() != null ? pokemon.getImagen() : "default.gif" %>">
+
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label">Actualizar Sprite del Pokémon (GIF o PNG)</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <% if (pokemon.getImagen() != null) { %>
+                                <img src="imagenes/<%= pokemon.getImagen() %>" alt="Actual" style="width: 50px; height: 50px; object-fit: contain;" class="border rounded bg-white p-1">
+                                <% } %>
+                                <input type="file" class="form-control" name="imagen" accept="image/*">
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <div class="col-md-3">

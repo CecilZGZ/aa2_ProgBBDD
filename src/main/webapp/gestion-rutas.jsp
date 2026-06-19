@@ -28,7 +28,8 @@
       <input type="text" class="form-control shadow-sm" name="qNombre" placeholder="Nombre de ruta..." value="<%= request.getAttribute("qNombre") != null ? request.getAttribute("qNombre") : "" %>">
     </div>
     <div class="col-md-5">
-      <input type="text" class="form-control shadow-sm" name="qClima" placeholder="Clima (ej. Soleado)..." value="<%= request.getAttribute("qClima") %>">
+      <input type="text" class="form-control shadow-sm" name="qClima" placeholder="Clima (ej. Soleado)..."
+             value="<%= request.getAttribute("qClima") != null ? request.getAttribute("qClima") : "" %>">
     </div>
     <div class="col-md-2">
       <button class="btn btn-primary w-100 shadow-sm" type="submit">Filtrar</button>

@@ -21,13 +21,18 @@ public class ListadoPokemonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
-        if (u == null) { response.sendRedirect("login"); return; }
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (usuario == null) { response.sendRedirect("login"); return; }
 
         String qNombre = request.getParameter("qNombre");
         String qTipo = request.getParameter("qTipo");
 
-        List<Pokemon> lista = pokemonDAO.buscador(qNombre, qTipo);
+        List<Pokemon> lista;
+        if ((qNombre == null || qNombre.isEmpty()) && (qTipo == null || qTipo.isEmpty())) {
+            lista = pokemonDAO.obtenerTodos();
+        } else {
+            lista = pokemonDAO.buscador(qNombre, qTipo);
+        }
 
         request.setAttribute("listaPokemon", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");

@@ -38,12 +38,19 @@ public class RutasServlet extends HttpServlet {
         String qNombre = request.getParameter("qNombre");
         String qClima = request.getParameter("qClima");
 
-        List<Ruta> lista = rutaDAO.buscador(qNombre, qClima);
+        List<Ruta> lista;
+
+        if ((qNombre == null || qNombre.trim().isEmpty()) && (qClima == null || qClima.trim().isEmpty())) {
+            lista = rutaDAO.obtenerTodas();
+        } else {
+            lista = rutaDAO.buscador(qNombre, qClima);
+        }
 
         request.setAttribute("listaRutas", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");
         request.setAttribute("qClima", qClima != null ? qClima : "");
         request.setAttribute("listaRegiones", regionDAO.obtenerTodas());
+        request.getRequestDispatcher("gestion-rutas.jsp").forward(request, response);
     }
 
     @Override
