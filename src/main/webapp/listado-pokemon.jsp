@@ -42,7 +42,7 @@
                 </td>
                 <td class="align-middle">
                     <a href="#" class="btn btn-sm btn-info text-white">Ver</a>
-                    <a href="#" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="modificar-pokemon?id=<%= p.getId() %>" class="btn btn-sm btn-warning">Editar</a>
                     <a href="borrado-pokemon?id=<%= p.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres liberar a este Pokémon y borrarlo de la base de datos?');">Borrar</a>
                 </td>
             </tr>
