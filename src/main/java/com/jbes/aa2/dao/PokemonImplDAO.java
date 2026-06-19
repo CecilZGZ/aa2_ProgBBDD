@@ -3,10 +3,8 @@ package com.jbes.aa2.dao;
 import com.jbes.aa2.model.Pokemon;
 import com.jbes.aa2.util.ConexionBBDD;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonImplDAO implements PokemonDAO {
@@ -47,7 +45,33 @@ public class PokemonImplDAO implements PokemonDAO {
 
     @Override
     public List<Pokemon> obtenerTodos() {
-        return null;
+        List<Pokemon> lista = new ArrayList<>();
+        String sql = "SELECT * FROM pokemon ORDER BY numero_pokedex ASC";
+
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Pokemon p = new Pokemon();
+                p.setId(resultSet.getInt("id"));
+                p.setNumeroPokedex(resultSet.getInt("numero_pokedex"));
+                p.setNombre(resultSet.getString("nombre"));
+                p.setPrimerTipo(resultSet.getString("primer_tipo"));
+                p.setSegundoTipo(resultSet.getString("segundo_tipo"));
+                p.setGeneracion(resultSet.getString("generacion"));
+                p.setTieneEvolucion(resultSet.getBoolean("tiene_evolucion"));
+                p.setDescripcion(resultSet.getString("descripcion"));
+                p.setAltura(resultSet.getDouble("altura"));
+                p.setPeso(resultSet.getDouble("peso"));
+                p.setIdRegion(resultSet.getInt("id_region"));
+
+                lista.add(p);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener el listado: " + e.getMessage());
+        }
+        return lista;
     }
 
     @Override
@@ -62,7 +86,20 @@ public class PokemonImplDAO implements PokemonDAO {
 
     @Override
     public boolean eliminar(int id) {
-        return false;
+        String sql = "DELETE FROM pokemon WHERE id = ?";
+
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+            int filasAfectadas = statement.executeUpdate();
+
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar el Pokémon: " + e.getMessage());
+            return false;
+        }
     }
 
 }

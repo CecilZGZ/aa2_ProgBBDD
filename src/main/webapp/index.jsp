@@ -14,7 +14,7 @@
             <h1 class="display-4 text-primary">Bienvenido a la Pokédex</h1>
             <p class="lead">Compedio de especies, rutas y demás.</p>
             <a href="registro-pokemon.jsp" class="btn btn-success btn-lg mt-3">Registrar Nuevo Pokémon</a>
-            <a href="listar-pokemon" class="btn btn-primary btn-lg mt-3">Ver Listado</a>
+            <a href="listado-pokemon" class="btn btn-primary btn-lg mt-3">Ver Listado</a>
         </div>
     </div>
 </div>
