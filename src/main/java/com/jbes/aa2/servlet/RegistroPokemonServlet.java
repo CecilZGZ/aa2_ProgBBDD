@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 @WebServlet("/registro-pokemon")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 10)
 public class RegistroPokemonServlet extends HttpServlet {
 
     private PokemonDAO pokemonDAO = new PokemonImplDAO();
@@ -32,10 +32,11 @@ public class RegistroPokemonServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Pokemon pokemon = new Pokemon();
-        pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numeroPokedex")));
+
+        pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numero")));
         pokemon.setNombre(request.getParameter("nombre"));
-        pokemon.setPrimerTipo(request.getParameter("primerTipo"));
-        pokemon.setSegundoTipo(request.getParameter("segundoTipo"));
+        pokemon.setPrimerTipo(request.getParameter("tipo1"));
+        pokemon.setSegundoTipo(request.getParameter("tipo2"));
         pokemon.setGeneracion(request.getParameter("generacion"));
         pokemon.setTieneEvolucion(request.getParameter("tieneEvolucion") != null);
         pokemon.setDescripcion(request.getParameter("descripcion"));
@@ -46,11 +47,10 @@ public class RegistroPokemonServlet extends HttpServlet {
         Part filePart = request.getPart("imagen");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        if (!fileName.isEmpty()) {
-
-            String uploadPath = getServletContext().getRealPath("") + File.separator + "imagenes";
+        if (fileName != null && !fileName.isEmpty()) {
+            String uploadPath = getServletContext().getRealPath("/") + "imagenes";
             File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
+            if (!uploadDir.exists()) uploadDir.mkdirs();
 
             filePart.write(uploadPath + File.separator + fileName);
             pokemon.setImagen(fileName);

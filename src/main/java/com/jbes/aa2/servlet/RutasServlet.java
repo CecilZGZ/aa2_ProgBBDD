@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/gestion-rutas")
 public class RutasServlet extends HttpServlet {
@@ -38,13 +37,10 @@ public class RutasServlet extends HttpServlet {
         String qNombre = request.getParameter("qNombre");
         String qClima = request.getParameter("qClima");
 
-        List<Ruta> lista;
-
-        if ((qNombre == null || qNombre.trim().isEmpty()) && (qClima == null || qClima.trim().isEmpty())) {
-            lista = rutaDAO.obtenerTodas();
-        } else {
-            lista = rutaDAO.buscador(qNombre, qClima);
-        }
+        List<Ruta> lista = rutaDAO.buscador(
+                qNombre != null ? qNombre : "",
+                qClima != null ? qClima : ""
+        );
 
         request.setAttribute("listaRutas", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");

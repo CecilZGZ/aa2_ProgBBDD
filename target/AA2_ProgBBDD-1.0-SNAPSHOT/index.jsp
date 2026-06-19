@@ -22,11 +22,13 @@
         <span class="navbar-brand mb-0 h1">
             Pokédex Sistema
         </span>
+
         <div class="d-flex align-items-center">
             <span class="text-light me-3">
                 Conectado: <strong><%= usuario.getNombreUsuario() %></strong>
                 <span class="badge bg-secondary ms-1"><%= usuario.getRol() %></span>
             </span>
+            <a href="perfil" class="btn btn-outline-light btn-sm me-2">Mi Perfil</a>
             <a href="logout" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
         </div>
     </div>

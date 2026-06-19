@@ -43,10 +43,10 @@ public class ModificarPokemonServlet extends HttpServlet {
 
             Pokemon pokemon = new Pokemon();
             pokemon.setId(id);
-            pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numeroPokedex")));
+            pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numero")));
             pokemon.setNombre(request.getParameter("nombre"));
-            pokemon.setPrimerTipo(request.getParameter("primerTipo"));
-            pokemon.setSegundoTipo(request.getParameter("segundoTipo"));
+            pokemon.setPrimerTipo(request.getParameter("tipo1"));
+            pokemon.setSegundoTipo(request.getParameter("tipo2"));
             pokemon.setGeneracion(request.getParameter("generacion"));
             pokemon.setTieneEvolucion(request.getParameter("tieneEvolucion") != null);
             pokemon.setDescripcion(request.getParameter("descripcion"));

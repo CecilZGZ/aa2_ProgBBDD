@@ -23,11 +23,11 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow border-dark">
-        <div class="text-center mb-4">
+        <div class="text-center mb-4 p-3 bg-white rounded shadow-sm border mx-auto" style="max-width: 320px;">
           <img src="imagenes/<%= pokemon.getImagen() != null ? pokemon.getImagen() : "default.gif" %>"
                alt="<%= pokemon.getNombre() %>"
-               class="img-fluid rounded shadow-sm"
-               style="max-height: 150px; object-fit: contain;">
+               class="img-fluid"
+               style="width: 250px; height: 250px; object-fit: contain; image-rendering: pixelated;">
         </div>
         <div class="card-header bg-dark text-white text-center">
           <h2 class="mb-0">#<%= pokemon.getNumeroPokedex() %> - <%= pokemon.getNombre() %></h2>

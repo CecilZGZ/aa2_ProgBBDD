@@ -13,6 +13,7 @@ public class RutaImplDAO implements RutaDAO {
         List<Ruta> lista = new ArrayList<>();
         String sql = "SELECT rutas.*, regiones.nombre AS nombre_region " +
                 "FROM rutas LEFT JOIN regiones ON rutas.id_region = regiones.id";
+
         try (Connection conexion = ConexionBBDD.getConexion();
              PreparedStatement statement = conexion.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -30,7 +31,9 @@ public class RutaImplDAO implements RutaDAO {
                 ruta.setNombreRegion(resultSet.getString("nombre_region"));
                 lista.add(ruta);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            System.err.println("Error en obtenerTodas: " + e.getMessage());
+        }
         return lista;
     }
 

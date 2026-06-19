@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/gestion-regiones")
 public class RegionesServlet extends HttpServlet {
@@ -35,13 +34,10 @@ public class RegionesServlet extends HttpServlet {
         String qNombre = request.getParameter("qNombre");
         String qProf = request.getParameter("qProf");
 
-        List<Region> lista;
-
-        if ((qNombre == null || qNombre.trim().isEmpty()) && (qProf == null || qProf.trim().isEmpty())) {
-            lista = regionDAO.obtenerTodas();
-        } else {
-            lista = regionDAO.buscador(qNombre, qProf);
-        }
+        List<Region> lista = regionDAO.buscador(
+                qNombre != null ? qNombre : "",
+                qProf != null ? qProf : ""
+        );
 
         request.setAttribute("listaRegiones", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");

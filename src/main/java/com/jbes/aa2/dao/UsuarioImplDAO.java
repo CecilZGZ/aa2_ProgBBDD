@@ -34,4 +34,18 @@ public class UsuarioImplDAO implements UsuarioDAO {
         }
         return usuario;
     }
+
+    @Override
+    public boolean cambiarContrasena(int id, String nuevaContrasena) {
+        String sql = "UPDATE usuarios SET contrasena = ? WHERE id = ?";
+        try (Connection conexion = com.jbes.aa2.util.ConexionBBDD.getConexion();
+             PreparedStatement preparedStatement = conexion.prepareStatement(sql)) {
+            preparedStatement.setString(1, nuevaContrasena);
+            preparedStatement.setInt(2, id);
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
