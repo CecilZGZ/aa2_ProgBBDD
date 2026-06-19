@@ -16,12 +16,12 @@
                     <h3 class="mb-0">Registrar Nuevo Pokémon</h3>
                 </div>
                 <div class="card-body">
-                    <form action="registro-pokemon" method="POST">
+                    <form action="registro-pokemon" method="POST" enctype="multipart/form-data" class="row g-3">
 
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label class="form-label">Número Pokédex</label>
-                                <input type="number" class="form-control" name="numero" required>
+                                <input type="number" class="form-control" name="numeroPokedex" required>
                             </div>
                             <div class="col-md-9">
                                 <label class="form-label">Nombre</label>
@@ -106,6 +106,11 @@
                         <div class="mb-3">
                             <label class="form-label">Descripción</label>
                             <textarea class="form-control" name="descripcion" rows="3" placeholder="Añade una breve entrada para la Pokédex..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Sprite del Pokémon (GIF o PNG)</label>
+                            <input type="file" class="form-control" name="imagen" accept="image/*">
                         </div>
 
                         <div class="d-flex justify-content-between">

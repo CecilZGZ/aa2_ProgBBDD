@@ -48,6 +48,7 @@
             <th>Nombre</th>
             <th>Primer Tipo</th>
             <th>Segundo Tipo</th>
+            <th>Sprite</th>
             <th>Acciones</th>
         </tr>
         </thead>
@@ -64,6 +65,9 @@
             <td>
                 <%= (pokemon.getSegundoTipo() != null && !pokemon.getSegundoTipo().isEmpty()) ?
                         "<span class='badge bg-secondary'>" + pokemon.getSegundoTipo() + "</span>" : "-" %>
+            </td>
+            <td>
+                <img src="imagenes/<%= pokemon.getImagen() != null ? pokemon.getImagen() : "default.gif" %>" alt="<%= pokemon.getNombre() %>" style="width: 60px; height: 60px; object-fit: contain;">
             </td>
             <td>
                 <a href="detalle-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-info text-white">Ver Ficha</a>

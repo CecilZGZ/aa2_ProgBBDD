@@ -14,6 +14,7 @@ public class Pokemon {
     private double peso;
     private int idRegion;
     private int idEvolucionaDe;
+    private String imagen;
 
     public Pokemon() {
     }
@@ -135,6 +136,14 @@ public class Pokemon {
             return regs[this.idRegion - 1];
         }
         return "Desconocida";
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
 }

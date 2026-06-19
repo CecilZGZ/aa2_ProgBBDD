@@ -23,6 +23,12 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow border-dark">
+        <div class="text-center mb-4 p-3 bg-white rounded shadow-sm border mx-auto" style="max-width: 320px;">
+          <img src="imagenes/<%= pokemon.getImagen() != null ? pokemon.getImagen() : "default.gif" %>"
+               alt="<%= pokemon.getNombre() %>"
+               class="img-fluid"
+               style="width: 250px; height: 250px; object-fit: contain; image-rendering: pixelated;">
+        </div>
         <div class="card-header bg-dark text-white text-center">
           <h2 class="mb-0">#<%= pokemon.getNumeroPokedex() %> - <%= pokemon.getNombre() %></h2>
         </div>
@@ -51,7 +57,6 @@
         <div class="card-footer d-flex justify-content-between bg-white">
           <a href="listado-pokemon" class="btn btn-outline-secondary">Volver al listado</a>
 
-          <%-- Verificación de rol para mostrar opciones de edición --%>
           <%
             Usuario userDetalle = (Usuario) session.getAttribute("usuarioLogueado");
             if (userDetalle != null && "Administrador".equals(userDetalle.getRol())) {
