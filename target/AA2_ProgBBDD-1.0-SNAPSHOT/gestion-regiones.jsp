@@ -22,13 +22,15 @@
     <a href="index.jsp" class="btn btn-secondary">Volver al Inicio</a>
   </div>
 
-  <form action="gestion-regiones" method="GET" class="mb-4">
-    <div class="input-group shadow-sm">
-      <input type="text" class="form-control" name="q" placeholder="Buscar por nombre o profesor..." value="<%= request.getAttribute("searchQuery") %>">
-      <button class="btn btn-primary" type="submit">Buscar</button>
-      <% if(request.getAttribute("searchQuery") != null && !request.getAttribute("searchQuery").toString().isEmpty()) { %>
-      <a href="gestion-regiones" class="btn btn-outline-danger">Limpiar</a>
-      <% } %>
+  <form action="gestion-regiones" method="GET" class="mb-4 row g-2">
+    <div class="col-md-5">
+      <input type="text" class="form-control shadow-sm" name="qNombre" placeholder="Nombre de región..." value="<%= request.getAttribute("qNombre") != null ? request.getAttribute("qNombre") : "" %>">
+    </div>
+    <div class="col-md-5">
+      <input type="text" class="form-control shadow-sm" name="qProf" placeholder="Nombre del profesor..." value="<%= request.getAttribute("qProf") %>">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100 shadow-sm" type="submit">Filtrar</button>
     </div>
   </form>
 

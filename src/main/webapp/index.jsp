@@ -61,7 +61,7 @@
                     <p class="card-text text-muted">Consulta las regiones del mundo Pokémon.</p>
                 </div>
                 <div class="mt-4">
-                    <a href="gestion-regiones" class="btn btn-success w-100 fw-bold">Entrar a Regiones</a>
+                    <a href="gestion-regiones.jsp" class="btn btn-success w-100 fw-bold">Entrar a Regiones</a>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                     <p class="card-text text-muted">Explora la configuración de rutas.</p>
                 </div>
                 <div class="mt-4">
-                    <a href="gestion-rutas" class="btn btn-info text-white w-100 fw-bold">Entrar a Rutas</a>
+                    <a href="gestion-rutas.jsp" class="btn btn-info text-white w-100 fw-bold">Entrar a Rutas</a>
                 </div>
             </div>
         </div>

@@ -58,36 +58,36 @@ public class RutaImplDAO implements RutaDAO {
     }
 
     @Override
-    public List<Ruta> buscador(String query) {
+    public List<Ruta> buscador(String nombre, String clima) {
         List<Ruta> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM rutas WHERE nombre LIKE ? OR clima_primario LIKE ?";
+        String sql = "SELECT rutas.*, regiones.nombre AS nombre_region " +
+                "FROM rutas LEFT JOIN regiones ON rutas.id_region = regiones.id " +
+                "WHERE IFNULL(rutas.nombre, '') LIKE ? AND IFNULL(rutas.clima_primario, '') LIKE ?";
 
         try (Connection conexion = ConexionBBDD.getConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
 
-            String filtro = (query != null && !query.trim().isEmpty()) ? "%" + query + "%" : "%";
-            statement.setString(1, filtro);
-            statement.setString(2, filtro);
+            statement.setString(1, (nombre != null && !nombre.isEmpty()) ? "%" + nombre + "%" : "%");
+            statement.setString(2, (clima != null && !clima.isEmpty()) ? "%" + clima + "%" : "%");
 
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
                     Ruta ruta = new Ruta();
-                    ruta.setId(rs.getInt("id"));
-                    ruta.setNombre(rs.getString("nombre"));
-                    ruta.setTieneAgua(rs.getBoolean("tiene_agua"));
-                    ruta.setClimaPrimario(rs.getString("clima_primario"));
-                    ruta.setCantidadEntrenadores(rs.getInt("cantidad_entrenadores"));
-                    ruta.setEntorno(rs.getString("entorno"));
-                    ruta.setNivelMin(rs.getInt("nivel_min"));
-                    ruta.setNivelMax(rs.getInt("nivel_max"));
-                    ruta.setIdRegion(rs.getInt("id_region"));
+                    ruta.setId(resultSet.getInt("id"));
+                    ruta.setNombre(resultSet.getString("nombre"));
+                    ruta.setTieneAgua(resultSet.getBoolean("tiene_agua"));
+                    ruta.setClimaPrimario(resultSet.getString("clima_primario"));
+                    ruta.setCantidadEntrenadores(resultSet.getInt("cantidad_entrenadores"));
+                    ruta.setEntorno(resultSet.getString("entorno"));
+                    ruta.setNivelMin(resultSet.getInt("nivel_min"));
+                    ruta.setNivelMax(resultSet.getInt("nivel_max"));
+                    ruta.setIdRegion(resultSet.getInt("id_region"));
+                    ruta.setNombreRegion(resultSet.getString("nombre_region"));
                     lista.add(ruta);
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar Rutas: " + e.getMessage());
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return lista;
     }
 }

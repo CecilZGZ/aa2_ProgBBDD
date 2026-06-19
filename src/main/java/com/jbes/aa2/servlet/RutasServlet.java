@@ -35,20 +35,21 @@ public class RutasServlet extends HttpServlet {
             return;
         }
 
-        String query = request.getParameter("q");
+        String qNombre = request.getParameter("qNombre");
+        String qClima = request.getParameter("qClima");
 
-        List<Ruta> lista = rutaDAO.buscador(query);
+        List<Ruta> lista = rutaDAO.buscador(qNombre, qClima);
 
         request.setAttribute("listaRutas", lista);
-        request.setAttribute("searchQuery", query != null ? query : "");
+        request.setAttribute("qNombre", qNombre != null ? qNombre : "");
+        request.setAttribute("qClima", qClima != null ? qClima : "");
         request.setAttribute("listaRegiones", regionDAO.obtenerTodas());
-        request.getRequestDispatcher("gestion-rutas.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
-        if (u == null || !"Administrador".equals(u.getRol())) {
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (usuario == null || !"Administrador".equals(usuario.getRol())) {
             response.sendRedirect("gestion-rutas");
             return;
         }

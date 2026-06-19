@@ -21,47 +21,47 @@ public class RegionesServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
-        if (u == null) { response.sendRedirect("login"); return; }
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (usuario == null) { response.sendRedirect("login"); return; }
 
         String action = request.getParameter("action");
-        if ("borrar".equals(action) && "Administrador".equals(u.getRol())) {
+        if ("borrar".equals(action) && "Administrador".equals(usuario.getRol())) {
             int id = Integer.parseInt(request.getParameter("id"));
             regionDAO.eliminar(id);
             response.sendRedirect("gestion-regiones");
             return;
         }
 
-        String query = request.getParameter("q");
-
-        List<Region> lista = regionDAO.buscador(query);
+        String qNombre = request.getParameter("qNombre");
+        String qProf = request.getParameter("qProf");
+        List<Region> lista = regionDAO.buscador(qNombre, qProf);
 
         request.setAttribute("listaRegiones", lista);
-        request.setAttribute("searchQuery", query != null ? query : "");
-        request.getRequestDispatcher("gestion-regiones.jsp").forward(request, response);
+        request.setAttribute("qNombre", qNombre != null ? qNombre : "");
+        request.setAttribute("qProf", qProf != null ? qProf : "");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
 
-        if (u == null || !"Administrador".equals(u.getRol())) {
+        if (usuario == null || !"Administrador".equals(usuario.getRol())) {
             response.sendRedirect("gestion-regiones");
             return;
         }
 
-        Region r = new Region();
-        r.setNombre(request.getParameter("nombre"));
-        r.setIniciales(request.getParameter("iniciales"));
-        r.setVillanos(request.getParameter("villanos"));
-        r.setProfesor(request.getParameter("profesor"));
-        r.setVideojuegoOrigen(request.getParameter("videojuegoOrigen"));
+        Region region = new Region();
+        region.setNombre(request.getParameter("nombre"));
+        region.setIniciales(request.getParameter("iniciales"));
+        region.setVillanos(request.getParameter("villanos"));
+        region.setProfesor(request.getParameter("profesor"));
+        region.setVideojuegoOrigen(request.getParameter("videojuegoOrigen"));
 
         String fechaStr = request.getParameter("fechaLanzamiento");
-        if (fechaStr != null && !fechaStr.isEmpty()) { r.setFechaLanzamiento(java.sql.Date.valueOf(fechaStr)); }
-        r.setTieneConcursos(request.getParameter("tieneConcursos") != null);
+        if (fechaStr != null && !fechaStr.isEmpty()) { region.setFechaLanzamiento(java.sql.Date.valueOf(fechaStr)); }
+        region.setTieneConcursos(request.getParameter("tieneConcursos") != null);
 
-        regionDAO.registrar(r);
+        regionDAO.registrar(region);
         response.sendRedirect("gestion-regiones");
     }
 }

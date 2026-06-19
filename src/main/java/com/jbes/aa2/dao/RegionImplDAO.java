@@ -56,35 +56,32 @@ public class RegionImplDAO implements RegionDAO {
     }
 
     @Override
-    public List<Region> buscador(String query) {
+    public List<Region> buscador(String nombre, String profesor) {
         List<Region> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM regiones WHERE nombre LIKE ? OR profesor LIKE ?";
+        String sql = "SELECT * FROM regiones WHERE IFNULL(nombre, '') LIKE ? AND IFNULL(profesor, '') LIKE ?";
 
         try (Connection conexion = ConexionBBDD.getConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
 
-            String filtro = (query != null && !query.trim().isEmpty()) ? "%" + query + "%" : "%";
-            statement.setString(1, filtro);
-            statement.setString(2, filtro);
+            statement.setString(1, (nombre != null && !nombre.isEmpty()) ? "%" + nombre + "%" : "%");
+            statement.setString(2, (profesor != null && !profesor.isEmpty()) ? "%" + profesor + "%" : "%");
 
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
                     Region region = new Region();
-                    region.setId(rs.getInt("id"));
-                    region.setNombre(rs.getString("nombre"));
-                    region.setIniciales(rs.getString("iniciales"));
-                    region.setVillanos(rs.getString("villanos"));
-                    region.setProfesor(rs.getString("profesor"));
-                    region.setVideojuegoOrigen(rs.getString("videojuego_origen"));
-                    region.setFechaLanzamiento(rs.getDate("fecha_lanzamiento"));
-                    region.setTieneConcursos(rs.getBoolean("tiene_concursos"));
+                    region.setId(resultSet.getInt("id"));
+                    region.setNombre(resultSet.getString("nombre"));
+                    region.setIniciales(resultSet.getString("iniciales"));
+                    region.setVillanos(resultSet.getString("villanos"));
+                    region.setProfesor(resultSet.getString("profesor"));
+                    region.setVideojuegoOrigen(resultSet.getString("videojuego_origen"));
+                    region.setFechaLanzamiento(resultSet.getDate("fecha_lanzamiento"));
+                    region.setTieneConcursos(resultSet.getBoolean("tiene_concursos"));
                     lista.add(region);
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar Regiones: " + e.getMessage());
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return lista;
     }
 }

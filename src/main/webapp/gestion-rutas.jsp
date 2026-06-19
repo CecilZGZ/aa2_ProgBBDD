@@ -23,13 +23,15 @@
     <a href="index.jsp" class="btn btn-secondary">Volver al Inicio</a>
   </div>
 
-  <form action="gestion-rutas" method="GET" class="mb-4">
-    <div class="input-group shadow-sm">
-      <input type="text" class="form-control" name="q" placeholder="Buscar por nombre o clima..." value="<%= request.getAttribute("searchQuery") %>">
-      <button class="btn btn-primary" type="submit">Buscar</button>
-      <% if(request.getAttribute("searchQuery") != null && !request.getAttribute("searchQuery").toString().isEmpty()) { %>
-      <a href="gestion-rutas" class="btn btn-outline-danger">Limpiar</a>
-      <% } %>
+  <form action="gestion-rutas" method="GET" class="mb-4 row g-2">
+    <div class="col-md-5">
+      <input type="text" class="form-control shadow-sm" name="qNombre" placeholder="Nombre de ruta..." value="<%= request.getAttribute("qNombre") != null ? request.getAttribute("qNombre") : "" %>">
+    </div>
+    <div class="col-md-5">
+      <input type="text" class="form-control shadow-sm" name="qClima" placeholder="Clima (ej. Soleado)..." value="<%= request.getAttribute("qClima") %>">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100 shadow-sm" type="submit">Filtrar</button>
     </div>
   </form>
 
@@ -88,7 +90,7 @@
     <tr>
       <td><%= ruta.getId() %></td>
       <td><strong><%= ruta.getNombre() %></strong></td>
-      <td><span class="badge bg-secondary">Región #<%= ruta.getIdRegion() %></span></td>
+      <td><span class="badge bg-secondary"><%= ruta.getNombreRegion() != null ? ruta.getNombreRegion() : "Sin región" %></span></td>
       <td><%= ruta.getClimaPrimario() %></td>
       <td><%= ruta.getEntorno() != null ? ruta.getEntorno() : "-" %></td>
       <td>Lv. <%= ruta.getNivelMin() %> - <%= ruta.getNivelMax() %></td>

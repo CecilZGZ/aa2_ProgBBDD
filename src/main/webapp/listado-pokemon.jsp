@@ -27,10 +27,17 @@
         </div>
     </div>
 
-    <form action="listado-pokemon" method="GET" class="mb-4">
-        <div class="input-group shadow-sm">
-            <input type="text" class="form-control" name="q" placeholder="Buscar Pokémon por nombre o tipo...">
-            <button class="btn btn-primary" type="submit">Buscar</button>
+    <form action="listado-pokemon" method="GET" class="mb-4 row g-2">
+        <div class="col-md-5">
+            <input type="text" class="form-control shadow-sm" name="qNombre" placeholder="Buscar por Nombre..."
+                   value="<%= request.getAttribute("qNombre") != null ? request.getAttribute("qNombre") : "" %>">
+        </div>
+        <div class="col-md-5">
+            <input type="text" class="form-control shadow-sm" name="qTipo" placeholder="Buscar por Tipo..."
+                   value="<%= request.getAttribute("qTipo") != null ? request.getAttribute("qTipo") : "" %>">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100 shadow-sm" type="submit">Filtrar</button>
         </div>
     </form>
 

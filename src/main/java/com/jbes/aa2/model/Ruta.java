@@ -10,6 +10,7 @@ public class Ruta {
     private int nivelMin;
     private int nivelMax;
     private int idRegion;
+    private String nombreRegion;
 
     public Ruta() {}
 
@@ -84,4 +85,8 @@ public class Ruta {
     public void setIdRegion(int idRegion) {
         this.idRegion = idRegion;
     }
+
+    public String getNombreRegion() { return nombreRegion; }
+
+    public void setNombreRegion(String nombreRegion) { this.nombreRegion = nombreRegion; }
 }

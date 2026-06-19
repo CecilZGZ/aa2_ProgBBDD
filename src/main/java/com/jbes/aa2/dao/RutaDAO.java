@@ -7,5 +7,5 @@ public interface RutaDAO {
     List<Ruta> obtenerTodas();
     boolean registrar(Ruta ruta );
     boolean eliminar(int id);
-    List<Ruta> buscador(String query);
+    List<Ruta> buscador(String nombre, String clima);
 }
