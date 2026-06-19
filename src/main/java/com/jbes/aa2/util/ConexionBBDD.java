@@ -9,7 +9,7 @@ public class ConexionBBDD {
     private static final String URL = "jdbc:mariadb://localhost:3306/entrega";
 
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "joeyblack97";
 
     public static Connection getConexion() throws SQLException {
         try {
