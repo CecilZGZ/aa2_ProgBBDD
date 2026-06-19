@@ -10,10 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/listado-pokemon")
-public class ListadoPokemonServlet extends HttpServlet {
+@WebServlet("/detalle-pokemon")
+public class DetallePokemonServlet extends HttpServlet {
 
     private PokemonDAO pokemonDAO;
 
@@ -25,18 +24,11 @@ public class ListadoPokemonServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String nombreBuscado = request.getParameter("nombreBusqueda");
-        String tipoBuscado = request.getParameter("tipoBusqueda");
+        int id = Integer.parseInt(request.getParameter("id"));
 
-        List<Pokemon> lista;
+        Pokemon pokemon = pokemonDAO.obtenerPorId(id);
 
-        if ((nombreBuscado != null && !nombreBuscado.isEmpty()) || (tipoBuscado != null && !tipoBuscado.isEmpty())) {
-            lista = pokemonDAO.buscador(nombreBuscado, tipoBuscado);
-        } else {
-            lista = pokemonDAO.obtenerTodos();
-        }
-
-        request.setAttribute("listadoPokemon", lista);
-        request.getRequestDispatcher("listado-pokemon.jsp").forward(request, response);
+        request.setAttribute("pokemon", pokemon);
+        request.getRequestDispatcher("detalle-pokemon.jsp").forward(request, response);
     }
 }

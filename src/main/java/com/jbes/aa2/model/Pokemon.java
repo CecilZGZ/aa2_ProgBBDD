@@ -18,7 +18,7 @@ public class Pokemon {
     public Pokemon() {
     }
 
-    public Pokemon(int idEvolucionaDe, int idRegion, double pesa, double altura, String descripcion, boolean tieneEvolucion, String generacion, String segundoTipo, String primerTipo, String nombre, int numeroPokedex, int id) {
+    public Pokemon(int idEvolucionaDe, int idRegion, double peso, double altura, String descripcion, boolean tieneEvolucion, String generacion, String segundoTipo, String primerTipo, String nombre, int numeroPokedex, int id) {
         this.idEvolucionaDe = idEvolucionaDe;
         this.idRegion = idRegion;
         this.peso = peso;
@@ -127,6 +127,14 @@ public class Pokemon {
 
     public void setIdEvolucionaDe(int idEvolucionaDe) {
         this.idEvolucionaDe = idEvolucionaDe;
+    }
+
+    public String getNombreRegion() {
+        String[] regs = {"Kanto", "Johto", "Hoenn", "Sinnoh", "Teselia", "Kalos", "Alola", "Galar", "Paldea", "Hisui"};
+        if (this.idRegion >= 1 && this.idRegion <= regs.length) {
+            return regs[this.idRegion - 1];
+        }
+        return "Desconocida";
     }
 
 }

@@ -95,7 +95,7 @@
                                     <option value="7" <%= pokemon.getIdRegion() == 7 ? "selected" : "" %>>Alola</option>
                                     <option value="8" <%= pokemon.getIdRegion() == 8 ? "selected" : "" %>>Galar</option>
                                     <option value="9" <%= pokemon.getIdRegion() == 9 ? "selected" : "" %>>Paldea</option>
-                                    <option value="10" <%= pokemon.getIdRegion() == 9 ? "selected" : "" %>>Hisui</option>
+                                    <option value="10" <%= pokemon.getIdRegion() == 10 ? "selected" : "" %>>Hisui</option>
                                 </select>
                             </div>
                             <div class="col">

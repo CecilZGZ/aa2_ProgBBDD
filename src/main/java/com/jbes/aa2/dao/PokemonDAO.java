@@ -14,4 +14,6 @@ public interface PokemonDAO {
     boolean modificar(Pokemon pokemon);
 
     boolean eliminar(int id);
+
+    List<Pokemon> buscador(String nombre, String tipo);
 }

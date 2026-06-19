@@ -14,6 +14,41 @@
 <div class="container mt-5">
     <h2 class="text-primary mb-4">Pokédex Nacional</h2>
 
+    <div class="card mb-4 shadow-sm border-primary">
+        <div class="card-body bg-light">
+            <form action="listado-pokemon" method="GET" class="row g-3 align-items-center">
+
+                <div class="col-auto">
+                    <label for="nombreBusqueda" class="col-form-label fw-bold">Buscar por Nombre:</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" name="nombreBusqueda" id="nombreBusqueda" placeholder="Ej: Pikachu">
+                </div>
+
+                <div class="col-auto">
+                    <label for="tipoBusqueda" class="col-form-label fw-bold">Filtrar por Tipo:</label>
+                </div>
+                <div class="col-md-3">
+                    <%
+                        String[] tiposBusqueda = {"Acero", "Agua", "Bicho", "Dragón", "Eléctrico", "Fantasma", "Fuego", "Hada", "Hielo", "Lucha", "Normal", "Planta", "Psíquico", "Roca", "Siniestro", "Tierra", "Veneno", "Volador"};
+                    %>
+                    <select class="form-select" name="tipoBusqueda" id="tipoBusqueda">
+                        <option value="">Todos los tipos</option>
+                        <% for(String t : tiposBusqueda) { %>
+                        <option value="<%= t %>"><%= t %></option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary fw-bold">Buscar</button>
+                    <a href="listado-pokemon" class="btn btn-outline-secondary">Limpiar filtros</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
     <div class="table-responsive shadow">
         <table class="table table-striped table-hover mb-0">
             <thead class="table-dark">
@@ -29,21 +64,19 @@
                 List<Pokemon> lista = (List<Pokemon>) request.getAttribute("listadoPokemon");
 
                 if (lista != null && !lista.isEmpty()) {
-                    for (Pokemon p : lista) {
+                    for (Pokemon pokemon : lista) {
             %>
             <tr>
-                <td class="align-middle">#<%= p.getNumeroPokedex() %></td>
-                <td class="align-middle"><strong><%= p.getNombre() %></strong></td>
+                <td class="align-middle">#<%= pokemon.getNumeroPokedex() %></td>
+                <td class="align-middle"><strong><%= pokemon.getNombre() %></strong></td>
                 <td class="align-middle">
-                    <span class="badge bg-success"><%= p.getPrimerTipo() %></span>
-                    <% if(p.getSegundoTipo() != null && !p.getSegundoTipo().isEmpty()) { %>
-                    <span class="badge bg-secondary"><%= p.getSegundoTipo() %></span>
+                    <span class="badge bg-success"><%= pokemon.getPrimerTipo() %></span>
+                    <% if(pokemon.getSegundoTipo() != null && !pokemon.getSegundoTipo().isEmpty()) { %>
+                    <span class="badge bg-secondary"><%= pokemon.getSegundoTipo() %></span>
                     <% } %>
                 </td>
                 <td class="align-middle">
-                    <a href="#" class="btn btn-sm btn-info text-white">Ver</a>
-                    <a href="modificar-pokemon?id=<%= p.getId() %>" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="borrado-pokemon?id=<%= p.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que quieres liberar a este Pokémon y borrarlo de la base de datos?');">Borrar</a>
+                    <a href="detalle-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-primary">Ver detalles</a>
                 </td>
             </tr>
             <%

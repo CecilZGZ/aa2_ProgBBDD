@@ -157,4 +157,44 @@ public class PokemonImplDAO implements PokemonDAO {
         }
     }
 
+    @Override
+    public List<Pokemon> buscador(String nombre, String tipo) {
+        List<Pokemon> lista = new ArrayList<>();
+        String sql = "SELECT * FROM pokemon WHERE nombre LIKE ? AND (primer_tipo LIKE ? OR segundo_tipo LIKE ?) ORDER BY numero_pokedex ASC";
+
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            String filtroNombre = (nombre != null && !nombre.isEmpty()) ? "%" + nombre + "%" : "%";
+
+            String filtroTipo = (tipo != null && !tipo.isEmpty()) ? tipo : "%";
+
+            statement.setString(1, filtroNombre);
+            statement.setString(2, filtroTipo);
+            statement.setString(3, filtroTipo);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Pokemon pokemon = new Pokemon();
+                    pokemon.setId(resultSet.getInt("id"));
+                    pokemon.setNumeroPokedex(resultSet.getInt("numero_pokedex"));
+                    pokemon.setNombre(resultSet.getString("nombre"));
+                    pokemon.setPrimerTipo(resultSet.getString("primer_tipo"));
+                    pokemon.setSegundoTipo(resultSet.getString("segundo_tipo"));
+                    pokemon.setGeneracion(resultSet.getString("generacion"));
+                    pokemon.setTieneEvolucion(resultSet.getBoolean("tiene_evolucion"));
+                    pokemon.setDescripcion(resultSet.getString("descripcion"));
+                    pokemon.setAltura(resultSet.getDouble("altura"));
+                    pokemon.setPeso(resultSet.getDouble("peso"));
+                    pokemon.setIdRegion(resultSet.getInt("id_region"));
+
+                    lista.add(pokemon);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar Pokémon: " + e.getMessage());
+        }
+        return lista;
+    }
+
 }
