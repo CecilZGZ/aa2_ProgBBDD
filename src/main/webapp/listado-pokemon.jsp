@@ -66,8 +66,10 @@
                 <%= (pokemon.getSegundoTipo() != null && !pokemon.getSegundoTipo().isEmpty()) ?
                         "<span class='badge bg-secondary'>" + pokemon.getSegundoTipo() + "</span>" : "-" %>
             </td>
-            <td>
-                <img src="imagenes/<%= pokemon.getImagen() != null ? pokemon.getImagen() : "default.gif" %>" alt="<%= pokemon.getNombre() %>" style="width: 60px; height: 60px; object-fit: contain;">
+            <td class="align-middle text-center">
+                <img src="<%= request.getContextPath() %>/imagenes/<%= (pokemon.getImagen() != null && !pokemon.getImagen().isEmpty()) ? pokemon.getImagen() : "default.gif" %>"
+                     alt="<%= pokemon.getNombre() %>"
+                     style="width: 55px; height: 55px; object-fit: contain;">
             </td>
             <td>
                 <a href="detalle-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-info text-white">Ver Ficha</a>
