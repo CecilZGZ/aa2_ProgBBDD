@@ -80,6 +80,20 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-dark">
+            <div class="card-body text-center d-flex flex-column justify-content-between">
+                <div>
+                    <h3 class="card-title text-dark mb-3">Usuarios</h3>
+                    <p class="card-text text-muted">Gestión de cuentas de Entrenadores y Administradores del sistema.</p>
+                </div>
+                <div class="mt-4">
+                    <a href="gestion-usuarios" class="btn btn-dark w-100 fw-bold">Gestionar Cuentas</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 
