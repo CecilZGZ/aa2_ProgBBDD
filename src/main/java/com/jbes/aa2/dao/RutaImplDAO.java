@@ -56,4 +56,38 @@ public class RutaImplDAO implements RutaDAO {
             return statement.executeUpdate() > 0;
         } catch (SQLException e) { return false; }
     }
+
+    @Override
+    public List<Ruta> buscador(String query) {
+        List<Ruta> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM rutas WHERE nombre LIKE ? OR clima_primario LIKE ?";
+
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            String filtro = (query != null && !query.trim().isEmpty()) ? "%" + query + "%" : "%";
+            statement.setString(1, filtro);
+            statement.setString(2, filtro);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Ruta ruta = new Ruta();
+                    ruta.setId(rs.getInt("id"));
+                    ruta.setNombre(rs.getString("nombre"));
+                    ruta.setTieneAgua(rs.getBoolean("tiene_agua"));
+                    ruta.setClimaPrimario(rs.getString("clima_primario"));
+                    ruta.setCantidadEntrenadores(rs.getInt("cantidad_entrenadores"));
+                    ruta.setEntorno(rs.getString("entorno"));
+                    ruta.setNivelMin(rs.getInt("nivel_min"));
+                    ruta.setNivelMax(rs.getInt("nivel_max"));
+                    ruta.setIdRegion(rs.getInt("id_region"));
+                    lista.add(ruta);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar Rutas: " + e.getMessage());
+        }
+        return lista;
+    }
 }

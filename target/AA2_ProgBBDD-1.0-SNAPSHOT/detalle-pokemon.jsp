@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.jbes.aa2.model.Pokemon" %>
+<%@ page import="com.jbes.aa2.model.Usuario" %>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -50,15 +51,20 @@
         <div class="card-footer d-flex justify-content-between bg-white">
           <a href="listado-pokemon" class="btn btn-outline-secondary">Volver al listado</a>
 
+          <%-- Verificación de rol para mostrar opciones de edición --%>
+          <%
+            Usuario userDetalle = (Usuario) session.getAttribute("usuarioLogueado");
+            if (userDetalle != null && "Administrador".equals(userDetalle.getRol())) {
+          %>
           <div>
             <a href="modificar-pokemon?id=<%= pokemon.getId() %>" class="btn btn-warning">Editar</a>
             <a href="borrado-pokemon?id=<%= pokemon.getId() %>" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres borrar este Pokémon?');">Borrar</a>
           </div>
+          <% } %>
         </div>
       </div>
     </div>
   </div>
 </div>
-
 </body>
 </html>

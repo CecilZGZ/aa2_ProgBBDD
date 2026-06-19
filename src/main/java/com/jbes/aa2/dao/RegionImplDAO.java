@@ -54,4 +54,37 @@ public class RegionImplDAO implements RegionDAO {
             return statement.executeUpdate() > 0;
         } catch (SQLException e) { return false; }
     }
+
+    @Override
+    public List<Region> buscador(String query) {
+        List<Region> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM regiones WHERE nombre LIKE ? OR profesor LIKE ?";
+
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            String filtro = (query != null && !query.trim().isEmpty()) ? "%" + query + "%" : "%";
+            statement.setString(1, filtro);
+            statement.setString(2, filtro);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Region region = new Region();
+                    region.setId(rs.getInt("id"));
+                    region.setNombre(rs.getString("nombre"));
+                    region.setIniciales(rs.getString("iniciales"));
+                    region.setVillanos(rs.getString("villanos"));
+                    region.setProfesor(rs.getString("profesor"));
+                    region.setVideojuegoOrigen(rs.getString("videojuego_origen"));
+                    region.setFechaLanzamiento(rs.getDate("fecha_lanzamiento"));
+                    region.setTieneConcursos(rs.getBoolean("tiene_concursos"));
+                    lista.add(region);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al buscar Regiones: " + e.getMessage());
+        }
+        return lista;
+    }
 }

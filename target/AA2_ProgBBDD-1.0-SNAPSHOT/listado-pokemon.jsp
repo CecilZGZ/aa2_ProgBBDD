@@ -1,6 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.jbes.aa2.model.Pokemon" %>
+<%@ page import="com.jbes.aa2.model.Usuario" %>
+<%
+    Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    boolean esAdmin = (usuario != null && "Administrador".equals(usuario.getRol()));
+%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -12,91 +17,63 @@
 <body class="bg-light">
 
 <div class="container mt-5">
-    <h2 class="text-primary mb-4">Pokédex Nacional</h2>
-
-    <div class="card mb-4 shadow-sm border-primary">
-        <div class="card-body bg-light">
-            <form action="listado-pokemon" method="GET" class="row g-3 align-items-center">
-
-                <div class="col-auto">
-                    <label for="nombreBusqueda" class="col-form-label fw-bold">Buscar por Nombre:</label>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="nombreBusqueda" id="nombreBusqueda" placeholder="Ej: Pikachu">
-                </div>
-
-                <div class="col-auto">
-                    <label for="tipoBusqueda" class="col-form-label fw-bold">Filtrar por Tipo:</label>
-                </div>
-                <div class="col-md-3">
-                    <%
-                        String[] tiposBusqueda = {"Acero", "Agua", "Bicho", "Dragón", "Eléctrico", "Fantasma", "Fuego", "Hada", "Hielo", "Lucha", "Normal", "Planta", "Psíquico", "Roca", "Siniestro", "Tierra", "Veneno", "Volador"};
-                    %>
-                    <select class="form-select" name="tipoBusqueda" id="tipoBusqueda">
-                        <option value="">Todos los tipos</option>
-                        <% for(String t : tiposBusqueda) { %>
-                        <option value="<%= t %>"><%= t %></option>
-                        <% } %>
-                    </select>
-                </div>
-
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary fw-bold">Buscar</button>
-                    <a href="listado-pokemon" class="btn btn-outline-secondary">Limpiar filtros</a>
-                </div>
-
-            </form>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Listado Nacional de Pokémon</h2>
+        <div>
+            <% if (esAdmin) { %>
+            <a href="registro-pokemon" class="btn btn-success me-2">Añadir Nuevo Pokémon</a>
+            <% } %>
+            <a href="index.jsp" class="btn btn-secondary">Volver al Inicio</a>
         </div>
     </div>
 
-    <div class="table-responsive shadow">
-        <table class="table table-striped table-hover mb-0">
-            <thead class="table-dark">
-            <tr>
-                <th>Nº</th>
-                <th>Nombre</th>
-                <th>Tipos</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <%
-                List<Pokemon> lista = (List<Pokemon>) request.getAttribute("listadoPokemon");
+    <form action="listado-pokemon" method="GET" class="mb-4">
+        <div class="input-group shadow-sm">
+            <input type="text" class="form-control" name="q" placeholder="Buscar Pokémon por nombre o tipo...">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
 
-                if (lista != null && !lista.isEmpty()) {
-                    for (Pokemon pokemon : lista) {
-            %>
-            <tr>
-                <td class="align-middle">#<%= pokemon.getNumeroPokedex() %></td>
-                <td class="align-middle"><strong><%= pokemon.getNombre() %></strong></td>
-                <td class="align-middle">
-                    <span class="badge bg-success"><%= pokemon.getPrimerTipo() %></span>
-                    <% if(pokemon.getSegundoTipo() != null && !pokemon.getSegundoTipo().isEmpty()) { %>
-                    <span class="badge bg-secondary"><%= pokemon.getSegundoTipo() %></span>
-                    <% } %>
-                </td>
-                <td class="align-middle">
-                    <a href="detalle-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-primary">Ver detalles</a>
-                </td>
-            </tr>
-            <%
-                }
-            } else {
-            %>
-            <tr>
-                <td colspan="4" class="text-center py-4">No hay Pokémon registrados en la base de datos.</td>
-            </tr>
-            <%
-                }
-            %>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-4">
-        <a href="index.jsp" class="btn btn-secondary">Volver al inicio</a>
-        <a href="registro-pokemon.jsp" class="btn btn-success float-end">Añadir Nuevo</a>
-    </div>
+    <table class="table table-striped shadow-sm bg-white rounded">
+        <thead class="table-dark">
+        <tr>
+            <th>Nº Pokedex</th>
+            <th>Nombre</th>
+            <th>Primer Tipo</th>
+            <th>Segundo Tipo</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List<Pokemon> lista = (List<Pokemon>) request.getAttribute("listaPokemon");
+            if (lista != null && !lista.isEmpty()) {
+                for (Pokemon pokemon : lista) {
+        %>
+        <tr>
+            <td>#<%= pokemon.getNumeroPokedex() %></td>
+            <td><strong><%= pokemon.getNombre() %></strong></td>
+            <td><span class="badge bg-primary"><%= pokemon.getPrimerTipo() %></span></td>
+            <td>
+                <%= (pokemon.getSegundoTipo() != null && !pokemon.getSegundoTipo().isEmpty()) ?
+                        "<span class='badge bg-secondary'>" + pokemon.getSegundoTipo() + "</span>" : "-" %>
+            </td>
+            <td>
+                <a href="detalle-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-info text-white">Ver Ficha</a>
+                <% if (esAdmin) { %>
+                <a href="modificar-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-warning">Editar</a>
+                <a href="borrado-pokemon?id=<%= pokemon.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro?');">Borrar</a>
+                <% } %>
+            </td>
+        </tr>
+        <%
+            }
+        } else {
+        %>
+        <tr><td colspan="5" class="text-center">No se encontraron Pokémon.</td></tr>
+        <% } %>
+        </tbody>
+    </table>
 </div>
 
 </body>
