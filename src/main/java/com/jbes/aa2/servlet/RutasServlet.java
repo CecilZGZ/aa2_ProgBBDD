@@ -5,6 +5,7 @@ import com.jbes.aa2.dao.RegionImplDAO;
 import com.jbes.aa2.dao.RutaDAO;
 import com.jbes.aa2.dao.RutaImplDAO;
 import com.jbes.aa2.model.Ruta;
+import com.jbes.aa2.model.Usuario;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/gestion-rutas")
 public class RutasServlet extends HttpServlet {
@@ -21,22 +24,35 @@ public class RutasServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (usuario == null) { response.sendRedirect("login"); return; }
 
-        if ("borrar".equals(action)) {
+        String action = request.getParameter("action");
+        if ("borrar".equals(action) && "Administrador".equals(usuario.getRol())) {
             int id = Integer.parseInt(request.getParameter("id"));
             rutaDAO.eliminar(id);
             response.sendRedirect("gestion-rutas");
             return;
         }
 
-        request.setAttribute("listaRutas", rutaDAO.obtenerTodas());
+        String query = request.getParameter("q");
+
+        List<Ruta> lista = rutaDAO.buscador(query);
+
+        request.setAttribute("listaRutas", lista);
+        request.setAttribute("searchQuery", query != null ? query : "");
         request.setAttribute("listaRegiones", regionDAO.obtenerTodas());
         request.getRequestDispatcher("gestion-rutas.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (u == null || !"Administrador".equals(u.getRol())) {
+            response.sendRedirect("gestion-rutas");
+            return;
+        }
+
         Ruta ruta = new Ruta();
         ruta.setNombre(request.getParameter("nombre"));
         ruta.setTieneAgua(request.getParameter("tieneAgua") != null);

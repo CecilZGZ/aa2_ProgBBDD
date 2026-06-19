@@ -7,4 +7,5 @@ public interface RegionDAO {
     List<Region> obtenerTodas();
     boolean registrar(Region r);
     boolean eliminar(int id);
+    List<Region> buscador(String query);
 }
