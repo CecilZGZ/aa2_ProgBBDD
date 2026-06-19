@@ -21,7 +21,7 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label class="form-label">Número Pokédex</label>
-                                <input type="number" class="form-control" name="numero" required>
+                                <input type="number" class="form-control" name="numeroPokedex" required>
                             </div>
                             <div class="col-md-9">
                                 <label class="form-label">Nombre</label>

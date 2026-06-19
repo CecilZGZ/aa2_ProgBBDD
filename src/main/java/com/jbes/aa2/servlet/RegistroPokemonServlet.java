@@ -46,7 +46,7 @@ public class RegistroPokemonServlet extends HttpServlet {
         Part filePart = request.getPart("imagen");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        if (fileName != null && !fileName.isEmpty()) {
+        if (!fileName.isEmpty()) {
 
             String uploadPath = getServletContext().getRealPath("") + File.separator + "imagenes";
             File uploadDir = new File(uploadPath);

@@ -58,7 +58,6 @@
   <table class="table table-striped shadow-sm">
     <thead class="table-dark">
     <tr>
-      <th>ID</th>
       <th>Nombre</th>
       <th>Iniciales</th>
       <th>Villanos</th>
@@ -76,7 +75,6 @@
         for(Region region : listaRegionesCompleta) {
     %>
     <tr>
-      <td><%= region.getId() %></td>
       <td><strong><%= region.getNombre() %></strong></td>
       <td><%= region.getIniciales() != null ? region.getIniciales() : "-" %></td>
       <td><%= region.getVillanos() != null ? region.getVillanos() : "-" %></td>

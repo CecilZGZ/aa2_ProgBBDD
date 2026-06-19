@@ -71,9 +71,8 @@
   <table class="table table-striped shadow-sm">
     <thead class="table-dark">
     <tr>
-      <th>ID</th>
       <th>Nombre</th>
-      <th>Región (ID)</th>
+      <th>Región</th>
       <th>Clima</th>
       <th>Entorno</th>
       <th>Niveles</th>
@@ -89,7 +88,6 @@
         for(Ruta ruta : listaRutasCompleta) {
     %>
     <tr>
-      <td><%= ruta.getId() %></td>
       <td><strong><%= ruta.getNombre() %></strong></td>
       <td><span class="badge bg-secondary"><%= ruta.getNombreRegion() != null ? ruta.getNombreRegion() : "Sin región" %></span></td>
       <td><%= ruta.getClimaPrimario() %></td>
