@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.jbes.aa2.model.Usuario" %>
 <%
-    // CONTROL DE ACCESO: Si no hay usuario en sesión, patada hacia el formulario de login
     Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
     if (usuario == null) {
         response.sendRedirect("login");
@@ -81,7 +80,8 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <% if ("Administrador".equals(usuario.getRol())) { %>
+    <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm border-dark">
             <div class="card-body text-center d-flex flex-column justify-content-between">
                 <div>
@@ -94,6 +94,7 @@
             </div>
         </div>
     </div>
+    <% } %>
 </div>
 </div>
 

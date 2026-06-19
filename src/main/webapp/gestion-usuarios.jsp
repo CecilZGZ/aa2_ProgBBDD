@@ -51,10 +51,10 @@
       <td><strong><%= usuario.getNombreUsuario() %></strong></td>
       <td><%= usuario.getRol() %></td>
       <td>
-        <% if (usuario.getId() != u.getId()) { %>
-        <a href="gestion-usuarios?action=borrar&id=<%= usuario.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Borrar a este usuario?');">Eliminar</a>
+        <% if ("oak".equalsIgnoreCase(usuario.getNombreUsuario())) { %>
+        <span class="badge bg-warning text-dark">Protegido (Admin Supremo)</span>
         <% } else { %>
-        <span class="text-muted small">Tú</span>
+        <a href="gestion-usuarios?action=borrar&id=<%= usuario.getId() %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar a este usuario?');">Eliminar</a>
         <% } %>
       </td>
     </tr>

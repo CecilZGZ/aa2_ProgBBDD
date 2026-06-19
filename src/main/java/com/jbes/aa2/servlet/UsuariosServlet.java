@@ -22,7 +22,7 @@ public class UsuariosServlet extends HttpServlet {
         String action = request.getParameter("action");
         if ("borrar".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            if (id != usuario.getId()) { usuarioDAO.eliminar(id); }
+            usuarioDAO.eliminar(id);
             response.sendRedirect("gestion-usuarios");
             return;
         }

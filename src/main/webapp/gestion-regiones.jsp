@@ -27,7 +27,7 @@
       <input type="text" class="form-control shadow-sm" name="qNombre" placeholder="Nombre de región..." value="<%= request.getAttribute("qNombre") != null ? request.getAttribute("qNombre") : "" %>">
     </div>
     <div class="col-md-5">
-      <input type="text" class="form-control shadow-sm" name="qProf" placeholder="Nombre del profesor..." value="<%= request.getAttribute("qProf") %>">
+      <input type="text" class="form-control shadow-sm" name="qProf" placeholder="Nombre del profesor..." value="<%= request.getAttribute("qProf") != null ? request.getAttribute("qProf") : "" %>">
     </div>
     <div class="col-md-2">
       <button class="btn btn-primary w-100 shadow-sm" type="submit">Filtrar</button>
