@@ -33,7 +33,7 @@ public class RegistroPokemonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Pokemon pokemon = new Pokemon();
 
-        pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numero")));
+        pokemon.setNumeroPokedex(Integer.parseInt(request.getParameter("numeroPokedex")));
         pokemon.setNombre(request.getParameter("nombre"));
         pokemon.setPrimerTipo(request.getParameter("tipo1"));
         pokemon.setSegundoTipo(request.getParameter("tipo2"));
