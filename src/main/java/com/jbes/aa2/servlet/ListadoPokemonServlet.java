@@ -21,8 +21,8 @@ public class ListadoPokemonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario u = (Usuario) request.getSession().getAttribute("usuarioLogueado");
-        if (u == null) { response.sendRedirect("login"); return; }
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioLogueado");
+        if (usuario == null) { response.sendRedirect("login"); return; }
 
         String qNombre = request.getParameter("qNombre");
         String qTipo = request.getParameter("qTipo");

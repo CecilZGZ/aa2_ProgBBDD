@@ -29,8 +29,7 @@ public class RutasServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         if ("borrar".equals(action) && "Administrador".equals(usuario.getRol())) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            rutaDAO.eliminar(id);
+            rutaDAO.eliminar(Integer.parseInt(request.getParameter("id")));
             response.sendRedirect("gestion-rutas");
             return;
         }
@@ -38,12 +37,20 @@ public class RutasServlet extends HttpServlet {
         String qNombre = request.getParameter("qNombre");
         String qClima = request.getParameter("qClima");
 
-        List<Ruta> lista = rutaDAO.buscador(qNombre, qClima);
+        if ("null".equals(qNombre)) qNombre = "";
+        if ("null".equals(qClima)) qClima = "";
+
+        List<Ruta> lista = rutaDAO.buscador(
+                qNombre != null ? qNombre.trim() : "",
+                qClima != null ? qClima.trim() : ""
+        );
 
         request.setAttribute("listaRutas", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");
         request.setAttribute("qClima", qClima != null ? qClima : "");
         request.setAttribute("listaRegiones", regionDAO.obtenerTodas());
+
+        request.getRequestDispatcher("gestion-rutas.jsp").forward(request, response);
     }
 
     @Override

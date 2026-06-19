@@ -26,19 +26,27 @@ public class RegionesServlet extends HttpServlet {
 
         String action = request.getParameter("action");
         if ("borrar".equals(action) && "Administrador".equals(usuario.getRol())) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            regionDAO.eliminar(id);
+            regionDAO.eliminar(Integer.parseInt(request.getParameter("id")));
             response.sendRedirect("gestion-regiones");
             return;
         }
 
         String qNombre = request.getParameter("qNombre");
         String qProf = request.getParameter("qProf");
-        List<Region> lista = regionDAO.buscador(qNombre, qProf);
+
+        if ("null".equals(qNombre)) qNombre = "";
+        if ("null".equals(qProf)) qProf = "";
+
+        List<Region> lista = regionDAO.buscador(
+                qNombre != null ? qNombre.trim() : "",
+                qProf != null ? qProf.trim() : ""
+        );
 
         request.setAttribute("listaRegiones", lista);
         request.setAttribute("qNombre", qNombre != null ? qNombre : "");
         request.setAttribute("qProf", qProf != null ? qProf : "");
+
+        request.getRequestDispatcher("gestion-regiones.jsp").forward(request, response);
     }
 
     @Override
