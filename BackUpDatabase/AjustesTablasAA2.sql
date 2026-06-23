@@ -13,7 +13,7 @@ INSERT IGNORE INTO usuarios (nombre_usuario, contrasena, rol) VALUES ('ash', '12
 ALTER TABLE pokemon 
 ADD COLUMN altura DOUBLE DEFAULT 0.0,
 ADD COLUMN peso DOUBLE DEFAULT 0.0,
-ADD COLUMN imagen VARCHAR(255) DEFAULT 'imagenes/default.gif';
+ADD COLUMN imagen VARCHAR(255) DEFAULT 'default.gif';
 
 UPDATE pokemon SET altura = 0.7, peso = 6.9 WHERE numero_pokedex = 1;
 UPDATE pokemon SET altura = 1.0, peso = 13.0 WHERE numero_pokedex = 2;
