@@ -146,7 +146,12 @@ public class PokemonImplDAO implements PokemonDAO {
 
     @Override
     public boolean eliminar(int id) {
-        return false;
+        String sql = "DELETE FROM regiones WHERE id = ?";
+        try (Connection conexion = ConexionBBDD.getConexion();
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) { return false; }
     }
 
     @Override
